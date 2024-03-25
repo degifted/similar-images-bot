@@ -1,0 +1,7 @@
+services:
+  bot_similar_images:
+    image: bot_similar_images
+    environment:
+      BOT_TOKEN: bot6420625082:AAHUlWjbsMmDaOwdS7cKqN7PiZL1r3DGGzI
+    build:
+      context: .
