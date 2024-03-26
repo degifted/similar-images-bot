@@ -149,7 +149,7 @@ public class BotHandler extends BaseBotHandler {
             final var newPost = info.getOriginalPost();
 
             final var equalMatch = info.getResults().stream()
-                    .filter(r -> r.getDistance() < 1.0)
+                    .filter(r -> r.getDistance() < 5.0)
                     .findAny();
             if (autoRemove && equalMatch.isPresent()) {
                 final var match = equalMatch.orElseThrow();

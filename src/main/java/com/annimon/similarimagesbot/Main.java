@@ -33,7 +33,7 @@ public class Main {
     private static boolean isOnceMode() {
         return stringProp("MODE")
                 .map(s -> s.equalsIgnoreCase("once"))
-                .orElse(true);
+                .orElse(false);
     }
 
     private static Optional<String> stringProp(String name) {
