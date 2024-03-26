@@ -31,7 +31,7 @@ public abstract class BaseBotHandler {
 
     public BaseBotHandler(String botToken) {
         bot = new TelegramBot.Builder(botToken)
-                .updateListenerSleep(20_000L)
+                //.updateListenerSleep(20_000L)
                 .build();
     }
 

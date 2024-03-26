@@ -14,9 +14,9 @@ RUN GRADLE_OPTS="-Xmx256m" gradle shadowJar --build-cache --stacktrace --no-daem
 FROM openjdk:11
 WORKDIR /app
 COPY --from=builder /usr/src/java-code/build/libs/SimilarImagesBot-1.0.4-all.jar .
-RUN echo 0 > uniqueId.dat
-ENV BOT_TOKEN="6420625082:AAHUlWjbsMmDaOwdS7cKqN7PiZL1r3DGGzI" \
-    ADMIN_ID=421629406 \
-    AUTO_REMOVE=true
+RUN echo -n 0 > uniqueId.dat
+#ENV BOT_TOKEN="6420625082:AAHUlWjbsMmDaOwdS7cKqN7PiZL1r3DGGzI" \
+#    ADMIN_ID=421629406 \
+#    AUTO_REMOVE=true
 
 ENTRYPOINT ["java", "-jar", "/app/SimilarImagesBot-1.0.4-all.jar"]

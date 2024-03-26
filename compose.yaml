@@ -2,6 +2,10 @@ services:
   bot_similar_images:
     image: bot_similar_images
     environment:
-      BOT_TOKEN: bot6420625082:AAHUlWjbsMmDaOwdS7cKqN7PiZL1r3DGGzI
+      BOT_TOKEN: "6420625082:AAHUlWjbsMmDaOwdS7cKqN7PiZL1r3DGGzI"
+      ADMIN_ID: 421629406
+      AUTO_REMOVE: true
+#      MODE: once
+
     build:
       context: .
