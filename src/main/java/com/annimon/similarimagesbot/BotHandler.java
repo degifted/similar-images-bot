@@ -80,6 +80,7 @@ public class BotHandler extends BaseBotHandler {
 
     private void deletePost(long channelId, int messageId) {
         LOGGER.debug("Delete message {} in {}", messageId, channelId);
+        bot.execute(new ForwardMessage(adminId, channelId, messageId));
         bot.execute(new DeleteMessage(channelId, messageId));
         try {
             indexer.deleteImage(channelId, messageId);
