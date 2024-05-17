@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import static com.github.kilianB.hashAlgorithms.DifferenceHash.Precision;
-
 public class ImageIndexer {
 
     private final Map<Long, SimilarImagesH2DatabaseMatcher> databases = new HashMap<>(5);
@@ -23,21 +22,23 @@ public class ImageIndexer {
     public SimilarImagesInfo processImage(Post originalPost, BufferedImage image)
             throws SQLException {
         final Long channelId = originalPost.getChannelId();
-        final String uniqueId = originalPost.getMessageId().toString();
-        final var db = getDatabaseForChannel(channelId);
-        if (db.doesEntryExist(uniqueId, differenceHash)) {
-            return new SimilarImagesInfo(originalPost, List.of());
-        }
+        final String uniqueId = originalPost.getMessageId().toString() + "_" + channelId.toString();
+        final var db = getDatabaseForChannel(new Long(0));
         final List<ImageResult> results = db.getMatchingImages(image)
                 .stream()
                 .map(r -> {
-                    final var similarPost = new Post(channelId, Integer.parseInt(r.value));
+                    String[] data = r.value.split("_");
+                    final var similarPost = new Post(Long.parseLong(data[1]), Integer.parseInt(data[0]));
                     return new ImageResult(similarPost, r.distance);
                 })
+                //.filter(r -> !r.getPost().getChannelId().equals(channelId))
+                .filter(r -> r.getDistance() < 5.0)
                 .filter(r -> !r.isSamePost(originalPost))
                 .collect(Collectors.toList());
-        db.addImage(uniqueId, image);
-        return new SimilarImagesInfo(originalPost, results);
+        if (results.isEmpty()) db.addImage(uniqueId, image);
+
+        //return new SimilarImagesInfo(originalPost, results);
+        return new SimilarImagesInfo(originalPost, results.stream().filter(r -> !r.getPost().getChannelId().equals(channelId)).collect(Collectors.toList()));
     }
 
 

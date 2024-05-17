@@ -79,14 +79,8 @@ public class BotHandler extends BaseBotHandler {
     }
 
     private void deletePost(long channelId, int messageId) {
-        LOGGER.debug("Delete message {} in {}", messageId, channelId);
         bot.execute(new ForwardMessage(adminId, channelId, messageId));
         bot.execute(new DeleteMessage(channelId, messageId));
-        try {
-            indexer.deleteImage(channelId, messageId);
-        } catch (SQLException ex) {
-            LOGGER.error("Cannot delete image in db", ex);
-        }
     }
 
     private Optional<Post> processCompareCommand(Matcher m) {
@@ -150,8 +144,9 @@ public class BotHandler extends BaseBotHandler {
             final var newPost = info.getOriginalPost();
 
             final var equalMatch = info.getResults().stream()
-                    .filter(r -> r.getDistance() < 5.0)
+                    //.filter(r -> r.getDistance() < 5.0)
                     .findAny();
+
             if (autoRemove && equalMatch.isPresent()) {
                 final var match = equalMatch.orElseThrow();
                 deletePost(newPost.getChannelId(), newPost.getMessageId());
