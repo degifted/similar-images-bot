@@ -69,6 +69,14 @@ public abstract class BaseBotHandler {
                 .collect(Collectors.toList());
     }
 
+    protected List<Message> getGroupPostsWithPhotos(List<Update> updates) {
+        return updates.stream()
+                .map(Update::message)
+                .filter(Objects::nonNull)
+                .filter(msg -> msg.photo() != null)
+                .collect(Collectors.toList());
+    }
+
     protected PhotoSize getSmallestPhoto(PhotoSize[] photoSizes) {
         return Arrays.stream(photoSizes)
                 .min(photoSizeComparator)

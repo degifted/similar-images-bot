@@ -13,6 +13,8 @@ import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import javax.imageio.ImageIO;
 import com.annimon.similarimagesbot.data.ImageResult;
 import com.annimon.similarimagesbot.data.Post;
@@ -114,7 +116,9 @@ public class BotHandler extends BaseBotHandler {
     }
 
     private void processUpdates(List<Update> updates, Set<Post> ignoredPosts) {
-        final List<Message> channelPosts = getChannelPostsWithPhotos(updates);
+        //updates.stream().forEach(s -> LOGGER.error(s));
+        List<Message> channelPosts = getGroupPostsWithPhotos(updates);
+        channelPosts.addAll(getChannelPostsWithPhotos(updates));
         if (channelPosts.isEmpty()) return;
         final var similarImagesInfos = new ArrayList<SimilarImagesInfo>();
         for (var post : channelPosts) {
